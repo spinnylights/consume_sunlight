@@ -7,25 +7,30 @@ class Spirit
               :vel_x,
               :vel_y
 
-  def initialize(window)
+  def initialize(window, x = 0, y = 0)
     @image = Gosu::Image.new(window, 'media/test_spirit.png', false)
-    @x = @y = @vel_x = @vel_y = 0.0
+    @x = x
+    @y = y
+  end
+
+  def movement_rate
+    2
   end
 
   def move_right
-    @x += 1
+    @x += movement_rate
   end
 
   def move_left
-    @x -= 1
+    @x -= movement_rate
   end
 
   def move_up
-    @y -= 1
+    @y -= movement_rate
   end
 
   def move_down
-    @y += 1
+    @y += movement_rate
   end
 
   def draw
