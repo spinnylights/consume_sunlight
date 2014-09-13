@@ -1,11 +1,13 @@
 require 'gosu'
+require_relative './spirit'
 
 class GameWindow < Gosu::Window
   attr_reader :background_color,
               :width, 
               :height, 
               :left_base,
-              :right_base
+              :right_base,
+              :spirit
   def initialize
     @width  = 1280
     @height = 1024
@@ -14,16 +16,30 @@ class GameWindow < Gosu::Window
     super width, height, true
     @left_base  = Gosu::Image.new(self, "media/base1smaller.png", false)
     @right_base = Gosu::Image.new(self, "media/base2smaller.png", false)
+    @spirit = Spirit.new( self )
     self.caption = "Consume Sunlight"
   end
 
   def update
+    if (button_down? Gosu::KbLeft) or (button_down? Gosu::GpLeft)
+      spirit.move_left
+    end
+    if (button_down? Gosu::KbRight) or (button_down? Gosu::GpRight)
+      spirit.move_right
+    end
+    if (button_down? Gosu::KbUp) or (button_down? Gosu::GpUp)
+      spirit.move_up
+    end
+    if (button_down? Gosu::KbDown) or (button_down? Gosu::GpDown)
+      spirit.move_down
+    end
   end
   
   def draw
     draw_background_color
     draw_left_base
     draw_right_base
+    spirit.draw
   end
 
   def draw_background_color
