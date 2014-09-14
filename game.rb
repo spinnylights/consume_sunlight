@@ -17,8 +17,28 @@ class GameWindow < Gosu::Window
     super width, height, true
     @left_base  = Gosu::Image.new(self, "media/base1smaller.png", false)
     @right_base = Gosu::Image.new(self, "media/base2smaller.png", false)
-    @spirit_left = Spirit.new( self, 319, 624)
-    @spirit_right = Spirit.new( self, 927, 624)
+    @spirit_left = Spirit.new(
+      self,
+      319,
+      624,
+      {
+        left_x: 0,
+        right_x: 640,
+        top_y: 100,
+        bottom_y: 634
+      }
+    )
+    @spirit_right = Spirit.new( 
+      self,
+      927,
+      624,
+      {
+        left_x: 640,
+        right_x: 1280,
+        top_y: 100,
+        bottom_y: 634 
+      }
+    )
     self.caption = "Consume Sunlight"
   end
 
@@ -61,8 +81,18 @@ class GameWindow < Gosu::Window
     draw_background_color
     draw_left_base
     draw_right_base
+    draw_left_box
     spirit_left.draw
     spirit_right.draw
+  end
+
+  def draw_left_box
+    draw_quad(
+      0,   100, Gosu::Color::BLACK,
+      640, 100, Gosu::Color::BLACK,
+      640, 634, Gosu::Color::BLACK,
+      0,   634, Gosu::Color::BLACK
+    )
   end
 
   def draw_background_color

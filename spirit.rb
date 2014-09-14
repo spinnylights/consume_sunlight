@@ -1,16 +1,21 @@
 require 'gosu'
 
 class Spirit
-  attr_reader :image
+  attr_reader :image,
+              :boundary
   attr_writer :x,
-              :y,
-              :vel_x,
-              :vel_y
+              :y
 
-  def initialize(window, x = 0, y = 0)
+  def initialize(
+    window, 
+    x = 0, 
+    y = 0,
+    boundary = {}
+  )
     @image = Gosu::Image.new(window, 'media/test_spirit.png', false)
     @x = x
     @y = y
+    @boundary = boundary;
   end
 
   def movement_rate
@@ -18,19 +23,27 @@ class Spirit
   end
 
   def move_right
-    @x += movement_rate
+    if (@x + movement_rate) < boundary[:right_x]
+      @x += movement_rate
+    end
   end
 
   def move_left
-    @x -= movement_rate
+    if (@x - movement_rate) > boundary[:left_x]
+      @x -= movement_rate
+    end
   end
 
   def move_up
-    @y -= movement_rate
+    if (@y - movement_rate) > boundary[:top_y]
+      @y -= movement_rate
+    end
   end
 
   def move_down
-    @y += movement_rate
+    if (@y + movement_rate) < boundary[:bottom_y]
+      @y += movement_rate
+    end
   end
 
   def draw
