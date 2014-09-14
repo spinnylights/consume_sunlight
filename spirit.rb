@@ -3,8 +3,8 @@ require 'gosu'
 class Spirit
   attr_reader :image,
               :boundary
-  attr_writer :x,
-              :y
+  attr_accessor :x,
+                :y
 
   def initialize(
     window, 
@@ -20,6 +20,14 @@ class Spirit
 
   def movement_rate
     2
+  end
+
+  def side_length
+    18
+  end
+
+  def half_side_length
+    side_length / 2
   end
 
   def move_right
