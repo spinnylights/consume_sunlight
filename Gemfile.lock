@@ -1,0 +1,12 @@
+GEM
+  specs:
+    gosu (0.8.4)
+    texplay (0.4.3)
+      gosu (>= 0.7.25)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  gosu
+  texplay
