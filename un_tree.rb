@@ -2,9 +2,9 @@ require 'gosu'
 require 'texplay'
 
 class UnTree
-  attr_reader :x, :y, :image
+  attr_reader :x, :y
 
-  def initialize(window, x, y, width, height, color = :black)
+  def initialize(window, x, y, width, height, color = :white)
     @x = x
     @y = y
     @box = TexPlay.create_image(window, width, height)
@@ -14,7 +14,6 @@ class UnTree
 
   def draw
     @box.draw(@x, @y, UnTree.z_order) 
-    make_transparent(0, 0, 100, 100)
   end
 
   def make_transparent(left_x, top_y, right_x, bottom_y)

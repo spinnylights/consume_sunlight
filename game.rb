@@ -2,6 +2,7 @@ require 'gosu'
 require 'texplay'
 require_relative './spirit'
 require_relative './un_tree'
+require_relative './tree'
 
 class GameWindow < Gosu::Window
   attr_reader :background_color,
@@ -12,7 +13,9 @@ class GameWindow < Gosu::Window
               :spirit_left,
               :spirit_right,
               :left_untree,
-              :right_untree
+              :right_untree,
+              :left_tree,
+              :right_tree
 
   def initialize
     @width  = 1280
@@ -25,28 +28,30 @@ class GameWindow < Gosu::Window
     @spirit_left = Spirit.new(
       self,
       319,
-      624,
+      658,
       {
-        left_x: 0,
-        right_x: 640,
-        top_y: 100,
-        bottom_y: 634
+        left_x: 91,
+        right_x: 541,
+        top_y: 130,
+        bottom_y: 664
       }
     )
     @spirit_right = Spirit.new( 
       self,
       927,
-      624,
+      658,
       {
-        left_x: 640,
-        right_x: 1280,
-        top_y: 100,
-        bottom_y: 634 
+        left_x: 700,
+        right_x: 1150,
+        top_y: 130,
+        bottom_y: 664 
       }
     )
     @tree_revealing_quads = []
-    @left_untree = UnTree.new(self, 0, 100, 640, 534)
-    @right_untree = UnTree.new(self, 640, 100, 640, 534, :green)
+    @left_untree = UnTree.new(self, 84, 130, 541, 534)
+    @right_untree = UnTree.new(self, 694, 130, 541, 534)
+    @left_tree = Tree.new(self, 84, 130)
+    @right_tree = Tree.new(self, 693, 130)
     self.caption = "Consume Sunlight"
   end
 
@@ -148,8 +153,12 @@ class GameWindow < Gosu::Window
     #)
     left_untree.draw
     right_untree.draw
-    spirit_left.draw
-    spirit_right.draw
+    left_untree.make_transparent(291, 629, 341, 664)
+    right_untree.make_transparent(901, 629, 951, 664)
+    #spirit_left.draw
+    #spirit_right.draw
+    left_tree.draw
+    right_tree.draw
     draw_tree_reveals
   end
 
