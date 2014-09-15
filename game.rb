@@ -1,4 +1,5 @@
 require 'gosu'
+require 'texplay'
 require_relative './spirit'
 require_relative './un_tree'
 
@@ -9,7 +10,9 @@ class GameWindow < Gosu::Window
               :left_base,
               :right_base,
               :spirit_left,
-              :spirit_right
+              :spirit_right,
+              :left_untree,
+              :right_untree
 
   def initialize
     @width  = 1280
@@ -42,64 +45,68 @@ class GameWindow < Gosu::Window
       }
     )
     @tree_revealing_quads = []
+    @left_untree = UnTree.new(self, 0, 100, 640, 534)
+    @right_untree = UnTree.new(self, 640, 100, 640, 534, :green)
     self.caption = "Consume Sunlight"
   end
 
   def exec_spirit_left_movement
     if (button_down? Gosu::KbA)
       spirit_left.move_left
-      reveal_tree(spirit_left)
+      reveal_tree(spirit_left, left_untree)
     end
     if (button_down? Gosu::KbD)
       spirit_left.move_right
-      reveal_tree(spirit_left)
+      reveal_tree(spirit_left, left_untree)
     end
     if (button_down? Gosu::KbW)
       spirit_left.move_up
-      reveal_tree(spirit_left)
+      reveal_tree(spirit_left, left_untree)
     end
     if (button_down? Gosu::KbS)
       spirit_left.move_down
-      reveal_tree(spirit_left)
+      reveal_tree(spirit_left, left_untree)
     end
   end
 
   def exec_spirit_right_movement
     if (button_down? Gosu::KbLeft) or (button_down? Gosu::GpLeft)
       spirit_right.move_left
-      reveal_tree(spirit_right)
+      reveal_tree(spirit_right, right_untree)
     end
     if (button_down? Gosu::KbRight) or (button_down? Gosu::GpRight)
       spirit_right.move_right
-      reveal_tree(spirit_right)
+      reveal_tree(spirit_right, right_untree)
     end
     if (button_down? Gosu::KbUp) or (button_down? Gosu::GpUp)
       spirit_right.move_up
-      reveal_tree(spirit_right)
+      reveal_tree(spirit_right, right_untree)
     end
     if (button_down? Gosu::KbDown) or (button_down? Gosu::GpDown)
       spirit_right.move_down
-      reveal_tree(spirit_right)
+      reveal_tree(spirit_right, right_untree)
     end
   end
 
-  def reveal_tree(spirit)
-    @tree_revealing_quads << {
-      top_left_x: (spirit.x - spirit.half_side_length),
-      top_left_y: (spirit.y - spirit.half_side_length),
-      
-      top_right_x: ( spirit.x + spirit.half_side_length ),
-      top_right_y: ( spirit.y - spirit.half_side_length ),
+  def reveal_tree(spirit, untree)
+    untree.make_transparent( *spirit.bounding_box ) 
 
-      bottom_right_x: ( spirit.x + spirit.half_side_length ),
-      bottom_right_y: ( spirit.y + spirit.half_side_length ),
+    #@tree_revealing_quads << {
+    #  top_left_x: (spirit.x - spirit.half_side_length),
+    #  top_left_y: (spirit.y - spirit.half_side_length),
+    #  
+    #  top_right_x: ( spirit.x + spirit.half_side_length ),
+    #  top_right_y: ( spirit.y - spirit.half_side_length ),
 
-      bottom_left_x: ( spirit.x - spirit.half_side_length ),
-      bottom_left_y: ( spirit.y + spirit.half_side_length ),
-      color: Gosu::Color.rgba(0, 255, 255, 255),
-      z_order: UnTree.z_order
-    }
-    @tree_revealing_quads.uniq!
+    #  bottom_right_x: ( spirit.x + spirit.half_side_length ),
+    #  bottom_right_y: ( spirit.y + spirit.half_side_length ),
+
+    #  bottom_left_x: ( spirit.x - spirit.half_side_length ),
+    #  bottom_left_y: ( spirit.y + spirit.half_side_length ),
+    #  color: Gosu::Color.rgba(0, 255, 255, 255),
+    #  z_order: 0.1
+    #}
+    #@tree_revealing_quads.uniq!
   end
 
   def draw_tree_reveals
@@ -131,14 +138,16 @@ class GameWindow < Gosu::Window
     draw_background_color
     draw_left_base
     draw_right_base
-    draw_left_box
-    draw_right_box
+    #draw_left_box
+    #draw_right_box
     #draw_box(
     #  0, 640,
     #  100, 634,
     #  Gosu::Color::BLUE,
     #  0.8
     #)
+    left_untree.draw
+    right_untree.draw
     spirit_left.draw
     spirit_right.draw
     draw_tree_reveals

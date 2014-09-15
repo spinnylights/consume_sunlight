@@ -30,6 +30,16 @@ class Spirit
     side_length / 2
   end
 
+  def bounding_box
+    #left_x, top_y, right_x, bottom_y 
+    [
+      x - half_side_length,
+      y - half_side_length,
+      x + half_side_length,
+      y + half_side_length
+    ]
+  end
+
   def move_right
     if (@x + movement_rate) < boundary[:right_x]
       @x += movement_rate
