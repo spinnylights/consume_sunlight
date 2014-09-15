@@ -1,4 +1,5 @@
 GEM
+  remote: https://rubygems.org/
   specs:
     gosu (0.8.4)
     texplay (0.4.3)
